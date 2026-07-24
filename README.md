@@ -1,6 +1,6 @@
 ## Flotsam
 
-A miscellaneous Web Component library built with Lit 3 and TypeScript.
+A sundry collection of washed-up Web Components built with Lit 3 and TypeScript. Some may be more useful than others.
 
 ### How to get started
 
