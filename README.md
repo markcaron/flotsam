@@ -1,4 +1,4 @@
-## Flotsam
+## 🛟 Flotsam
 
 A sundry collection of washed-up Web Components built with Lit 3 and TypeScript. Some may be more useful than others.
 
