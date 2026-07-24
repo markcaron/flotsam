@@ -35,8 +35,14 @@ styles/
 
 ## Workflow
 
-- `npm start` — launch CEM dev server with import map and demo discovery
-- `npm run analyze` — regenerate `custom-elements.json`
+- `npx cem serve` — launch CEM dev server with import map and demo discovery
+- `npx cem generate` — regenerate `custom-elements.json`
 - Never import from barrel/index files; always import the specific element module
 - Each element is self-contained in its own directory
 - Controllers and utilities that are element-specific live alongside the element
+
+## Git Policy
+
+- NEVER commit or push without explicit permission from the user
+- When work is complete, ask whether the user wants to commit — do not assume
+- Present a proposed commit message and let the user approve or adjust it
