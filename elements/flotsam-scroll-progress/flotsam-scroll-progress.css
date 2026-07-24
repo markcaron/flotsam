@@ -6,8 +6,13 @@
 
 :host {
   display: block;
-  position: relative;
   pointer-events: none;
+}
+
+#container {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
 }
 
 /* --- Horizontal (default) --- */

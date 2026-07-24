@@ -3,12 +3,15 @@ import type { ScrollObserverController } from './scroll-observer-controller.js';
 import { LitElement, html, isServer } from 'lit';
 import { customElement } from 'lit/decorators/custom-element.js';
 import { property } from 'lit/decorators/property.js';
+import { query } from 'lit/decorators/query.js';
 
 import styles from './flotsam-scroll-progress.css' with { type: 'css' };
 
 @customElement('flotsam-scroll-progress')
 export class FlotsamScrollProgress extends LitElement {
   static readonly styles = [styles];
+
+  @query('#container') private _container!: HTMLDivElement;
 
   #observer?: ScrollObserverController;
 
@@ -39,17 +42,19 @@ export class FlotsamScrollProgress extends LitElement {
     if (this.#observer) {
       this.#observer.selector = this.target;
     }
-    this.style.setProperty('--_progress', String(this.#observer?.progress ?? 0));
+    this._container?.style.setProperty('--_progress', String(this.#observer?.progress ?? 0));
     this.setAttribute('value', String(this.value));
   }
 
   render() {
     return html`
-      <div id="track" part="track">
-        <div id="fill" part="fill"></div>
-      </div>
-      <div id="marker" part="marker">
-        <slot></slot>
+      <div id="container">
+        <div id="track" part="track">
+          <div id="fill" part="fill"></div>
+        </div>
+        <div id="marker" part="marker">
+          <slot></slot>
+        </div>
       </div>
     `;
   }
