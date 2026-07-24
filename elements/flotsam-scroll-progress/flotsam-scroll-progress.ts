@@ -48,6 +48,9 @@ export class FlotsamScrollProgress extends LitElement {
       <div id="track" part="track">
         <div id="fill" part="fill"></div>
       </div>
+      <div id="marker" part="marker">
+        <slot></slot>
+      </div>
     `;
   }
 }

@@ -6,6 +6,7 @@
 
 :host {
   display: block;
+  position: relative;
   pointer-events: none;
 }
 
@@ -17,8 +18,17 @@
 }
 
 :host(:not([orientation="vertical"])) #fill {
-  transform: scaleX(var(--_progress, 0));
-  transform-origin: inline-start;
+  clip-path: inset(0 calc((1 - var(--_progress, 0)) * 100%) 0 0);
+}
+
+:host(:not([orientation="vertical"]):dir(rtl)) #fill {
+  clip-path: inset(0 0 0 calc((1 - var(--_progress, 0)) * 100%));
+}
+
+:host(:not([orientation="vertical"])) #marker {
+  inset-inline-start: calc(var(--_progress, 0) * 100%);
+  inset-block-start: 50%;
+  translate: -50% -50%;
 }
 
 /* --- Vertical --- */
@@ -29,8 +39,13 @@
 }
 
 :host([orientation="vertical"]) #fill {
-  transform: scaleY(var(--_progress, 0));
-  transform-origin: block-end;
+  clip-path: inset(0 0 calc((1 - var(--_progress, 0)) * 100%) 0);
+}
+
+:host([orientation="vertical"]) #marker {
+  inset-block-start: calc(var(--_progress, 0) * 100%);
+  inset-inline-start: 50%;
+  translate: -50% -50%;
 }
 
 /* --- Track --- */
@@ -39,7 +54,6 @@
   inline-size: 100%;
   block-size: 100%;
   background-color: var(--flotsam-scroll-progress-track-color, transparent);
-  overflow: hidden;
 }
 
 /* --- Fill --- */
@@ -47,13 +61,50 @@
 #fill {
   inline-size: 100%;
   block-size: 100%;
-  background-color:
+  background:
     var(
-      --flotsam-scroll-progress-color,
-      light-dark(
-        var(--flotsam-color-accent-brand, #ee0000),
-        var(--flotsam-color-accent-brand, #ee0000)
+      --flotsam-scroll-progress-background,
+      var(
+        --flotsam-scroll-progress-color,
+        light-dark(
+          var(--flotsam-color-accent-brand, #ee0000),
+          var(--flotsam-color-accent-brand, #ee0000)
+        )
       )
     );
-  will-change: transform;
+  will-change: clip-path;
+}
+
+/* --- Marker --- */
+
+#marker {
+  position: absolute;
+  display: none;
+  place-items: center;
+  place-content: center;
+  pointer-events: auto;
+  inline-size: var(--flotsam-scroll-progress-marker-size, auto);
+  block-size: var(--flotsam-scroll-progress-marker-size, auto);
+  background: var(--flotsam-scroll-progress-marker-background, transparent);
+  border-radius: var(--flotsam-scroll-progress-marker-radius, 0);
+  box-shadow: var(--flotsam-scroll-progress-marker-shadow, none);
+}
+
+/* Show marker when content is slotted (Safari/Firefox) */
+:host(:has(> *)) #marker {
+  display: flex;
+}
+
+/* Fix for Chromium — :scope inside bare @scope resolves to the host
+ * https://daverupert.com/2026/06/fix-for-host-has-slot/ */
+@scope {
+  :scope:has(> *) #marker {
+    display: flex;
+  }
+}
+
+::slotted(*) {
+  display: block;
+  max-inline-size: 100%;
+  max-block-size: 100%;
 }
