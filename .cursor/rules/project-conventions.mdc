@@ -1,0 +1,42 @@
+---
+description: Flotsam project structure, naming, and workflow conventions
+alwaysApply: true
+---
+
+# Flotsam Project Conventions
+
+Flotsam is a Lit 3 Web Component library using `@pwrs/cem` for analysis and dev server. Follow these conventions derived from the Felt element library (zeroedin/felt).
+
+## Project Structure
+
+```
+elements/
+  flotsam-<name>/
+    flotsam-<name>.ts        # Component class
+    flotsam-<name>.css        # Shadow DOM styles
+    demo/
+      index.html              # Primary demo
+      <variant>.html          # Additional demos
+.config/
+  cem.yaml                    # CEM analyzer + dev server config
+  import-map.json             # Path alias overrides
+styles/
+  flotsam.css                 # Aggregated design tokens (base + theme)
+```
+
+## Naming
+
+- Tag names: `flotsam-<name>` (e.g. `flotsam-card`, `flotsam-tooltip`)
+- Class names: `Flotsam<Name>` (e.g. `FlotsamCard`, `FlotsamTooltip`)
+- Package scope: `@flotsam/elements`
+- Import paths: `@flotsam/elements/flotsam-<name>/flotsam-<name>.js`
+- CSS token prefix: `--flotsam-`
+- Internal/private CSS custom properties: `--_` prefix (no namespace)
+
+## Workflow
+
+- `npm start` — launch CEM dev server with import map and demo discovery
+- `npm run analyze` — regenerate `custom-elements.json`
+- Never import from barrel/index files; always import the specific element module
+- Each element is self-contained in its own directory
+- Controllers and utilities that are element-specific live alongside the element

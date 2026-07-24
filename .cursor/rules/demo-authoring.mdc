@@ -1,0 +1,39 @@
+---
+description: Conventions for writing CEM demo HTML files
+globs: elements/**/demo/*.html
+alwaysApply: false
+---
+
+# Demo Authoring
+
+Demo files are plain HTML consumed by `cem serve` for live component previews.
+
+## File Structure
+
+```html
+---
+description: "Short sentence describing what this demo shows."
+---
+<link rel="stylesheet" href="/styles/flotsam.css">
+
+<flotsam-example variant="primary">Hello</flotsam-example>
+
+<style>
+  /* Demo-specific layout styles only */
+</style>
+
+<script type="module">
+  import '@flotsam/elements/flotsam-example/flotsam-example.js';
+</script>
+```
+
+## Rules
+
+- YAML frontmatter `description` is required — it appears in the CEM docs UI
+- Always link the shared token stylesheet: `<link rel="stylesheet" href="/styles/flotsam.css">`
+- Import elements as ES modules via the `@flotsam/elements/` path
+- Import only the elements used in this specific demo
+- `index.html` is the primary/default demo for the element
+- Additional demos use descriptive filenames: `sizes.html`, `variants.html`, `responsive.html`
+- Keep demo markup minimal — show one concept per file
+- Demo-only styles go in an inline `<style>` block, not in the component CSS

@@ -1,0 +1,75 @@
+---
+description: TypeScript patterns for authoring Flotsam Web Components
+globs: elements/**/*.ts
+alwaysApply: false
+---
+
+# Component TypeScript Patterns
+
+## Class Structure
+
+```typescript
+import { LitElement, html } from 'lit';
+import { customElement } from 'lit/decorators/custom-element.js';
+import { property } from 'lit/decorators/property.js';
+
+import styles from './flotsam-example.css' with { type: 'css' };
+
+@customElement('flotsam-example')
+export class FlotsamExample extends LitElement {
+  static readonly styles = [styles];
+
+  /** Description of the property for CEM docs. */
+  @property({ reflect: true }) variant?: 'primary' | 'secondary';
+
+  render() {
+    return html`<div id="container"><slot></slot></div>`;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'flotsam-example': FlotsamExample;
+  }
+}
+```
+
+## Import Rules
+
+- Import individual decorators, not the barrel: `lit/decorators/custom-element.js`, `lit/decorators/property.js`, `lit/decorators/query.js`, `lit/decorators/state.js`
+- CSS import assertion: `import styles from './flotsam-foo.css' with { type: 'css' };`
+- Sibling elements: `import '@flotsam/elements/flotsam-icon/flotsam-icon.js';`
+- Use `type` imports where possible: `import type { PropertyValues } from 'lit';`
+
+## Properties & State
+
+- Public API properties use `@property({ reflect: true })` with JSDoc
+- Boolean properties: `@property({ type: Boolean, reflect: true }) open = false;`
+- Kebab-case attributes mapped via `attribute`: `@property({ attribute: 'icon-set' }) iconSet`
+- Internal reactive state: `@state()` decorator
+- Private fields: use native `#` prefix, never `private` keyword for runtime privacy
+
+## Events
+
+Define custom event classes alongside the element, with `bubbles: true` and `composed: true`:
+
+```typescript
+export class FlotsamExampleChangeEvent extends Event {
+  constructor(public state: 'open' | 'closed') {
+    super('flotsam-example-change', { bubbles: true, composed: true });
+  }
+}
+```
+
+## SSR & Server Safety
+
+- Guard browser APIs with `import { isServer } from 'lit';`
+- Wrap `ResizeObserver`, `getComputedStyle`, DOM queries in `if (!isServer)` blocks
+- Use `connectedCallback` + `isServer` guard for client-only initialization
+
+## Controllers
+
+- Use `InternalsController` from `@patternfly/pfe-core` for ARIA role assignment
+- Use `SlotController` for slot presence detection
+- Use `Logger` for dev-time warnings
+- Element-specific controllers live in the element directory

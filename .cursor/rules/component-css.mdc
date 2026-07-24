@@ -1,0 +1,99 @@
+---
+description: CSS patterns for styling Flotsam Web Components
+globs: elements/**/*.css
+alwaysApply: false
+---
+
+# Component CSS Patterns
+
+## Boilerplate
+
+Every component stylesheet starts with the universal box-sizing reset:
+
+```css
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+:host {
+  display: block;
+}
+```
+
+## Logical Properties
+
+Always use logical properties instead of physical ones:
+
+- `inline-size` / `block-size` (not `width` / `height`)
+- `inset-inline-start` / `inset-block-start` (not `left` / `top`)
+- `margin-inline` / `padding-block` (not `margin-left` / `padding-top`)
+- `border-inline-start` (not `border-left`)
+
+## Design Tokens
+
+- Public tokens: `--flotsam-<category>-<name>` with hardcoded fallback
+- Private/internal tokens: `--_<descriptive-name>` (no namespace, scoped to shadow DOM)
+- Always provide a fallback value: `var(--flotsam-space-lg, 16px)`
+
+```css
+:host {
+  padding: var(--flotsam-space-lg, 16px);
+  color: var(--flotsam-color-text-primary);
+}
+
+#container {
+  gap: var(--_container-gap, var(--flotsam-space-md, 8px));
+}
+```
+
+## Color Scheme / Dark Mode
+
+Use `light-dark()` for automatic light/dark adaptation:
+
+```css
+background-color: light-dark(
+  var(--flotsam-color-surface-lightest, #ffffff),
+  var(--flotsam-color-surface-darkest, #151515)
+);
+```
+
+## Responsive Design
+
+Prefer `@container` queries over `@media` queries. Name containers on the host:
+
+```css
+:host {
+  container: card / inline-size;
+}
+
+@container card (min-width: 576px) {
+  #content { grid-template-columns: 1fr 1fr; }
+}
+```
+
+## Accessibility
+
+Use the `.visually-hidden` pattern for screen-reader-only text:
+
+```css
+.visually-hidden {
+  position: absolute !important;
+  block-size: 1px;
+  inline-size: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  padding: 0 !important;
+  margin: -1px !important;
+}
+```
+
+## Slotted & Parts
+
+- Style slotted content with `::slotted(<selector>)`
+- Expose stylable internals with `part="name"` in the template
+- Use CSS nesting freely; it is supported in all target environments

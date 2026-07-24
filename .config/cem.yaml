@@ -1,0 +1,13 @@
+sourceControlRootUrl: https://github.com/markcaron/flotsam/tree/main/
+generate:
+  files:
+    - elements/*/flotsam-*.ts
+  output: custom-elements.json
+  demoDiscovery:
+    fileGlob: elements/**/demo/*.html
+    urlPattern: elements/:tag/demo/:demo.html
+    urlTemplate: /elements/{{.tag}}/demo/{{.demo}}.html
+serve:
+  importMap:
+    generate: true
+    overrideFile: .config/import-map.json
