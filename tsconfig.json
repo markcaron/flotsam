@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "declaration": true,
+    "downlevelIteration": true,
+    "emitDeclarationOnly": false,
+    "importHelpers": true,
+    "inlineSources": true,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "verbatimModuleSyntax": true,
+    "noEmitOnError": false,
+    "outDir": ".",
+    "rootDir": ".",
+    "sourceMap": true,
+    "strict": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "target": "es2022",
+    "skipLibCheck": true,
+    "paths": {
+      "@flotsam/elements/*": ["./elements/*"]
+    },
+    "lib": [
+      "DOM.iterable",
+      "DOM",
+      "ES2020",
+      "ES2022"
+    ]
+  },
+  "include": [
+    "elements/**/*.ts",
+    "declaration.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.js"
+  ]
+}

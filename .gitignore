@@ -1,0 +1,8 @@
+node_modules
+.claude
+custom-elements.json
+*.js
+*.js.map
+*.d.ts
+!cem.config.js
+!declaration.d.ts
