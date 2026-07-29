@@ -8,7 +8,7 @@
   },
   "scripts": {
     "analyze": "cem generate",
-    "build": "cem serve --build --import esm",
+    "build": "cem generate && cem serve --build --import esm",
     "start": "cem serve"
   },
   "dependencies": {
