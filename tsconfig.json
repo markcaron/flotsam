@@ -5,7 +5,7 @@
     "declaration": true,
     "downlevelIteration": true,
     "emitDeclarationOnly": false,
-    "importHelpers": true,
+    "importHelpers": false,
     "inlineSources": true,
     "module": "nodenext",
     "moduleResolution": "nodenext",

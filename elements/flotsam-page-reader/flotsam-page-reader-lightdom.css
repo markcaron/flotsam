@@ -1,0 +1,6 @@
+::highlight(flotsam-page-reader) {
+  background-color: var(
+    --flotsam-color-highlight,
+    light-dark(rgba(0, 102, 204, 0.12), rgba(146, 197, 249, 0.15))
+  );
+}

@@ -1,0 +1,21 @@
+:root {
+  color-scheme: light dark;
+
+  /* Primitives — aligned to RHDS global color tokens
+   * https://ux.redhat.com/tokens/color/ */
+  --flotsam-color-brand-red: #ee0000;
+  --flotsam-color-blue-50: #0066cc;
+  --flotsam-color-blue-30: #92c5f9;
+  --flotsam-color-gray-20: #e0e0e0;
+  --flotsam-color-gray-60: #4d4d4d;
+  --flotsam-color-white: #ffffff;
+  --flotsam-color-black: #000000;
+
+  /* Semantic */
+  --flotsam-color-interactive-default: light-dark(var(--flotsam-color-blue-50), var(--flotsam-color-blue-30));
+  --flotsam-color-interactive-text: light-dark(var(--flotsam-color-white), var(--flotsam-color-black));
+  --flotsam-color-accent-brand: var(--flotsam-color-brand-red);
+  --flotsam-color-surface-subtle: light-dark(var(--flotsam-color-gray-20), var(--flotsam-color-gray-60));
+  --flotsam-color-focus: var(--flotsam-color-interactive-default);
+  --flotsam-color-highlight: light-dark(rgba(0, 102, 204, 0.12), rgba(146, 197, 249, 0.15));
+}

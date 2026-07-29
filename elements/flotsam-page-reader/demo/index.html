@@ -1,0 +1,49 @@
+---
+description: "Page reader that reads an article aloud with paragraph highlighting and auto-scroll."
+---
+<link rel="stylesheet" href="/styles/flotsam.css">
+<link rel="stylesheet" href="/elements/flotsam-page-reader/flotsam-page-reader-lightdom.css">
+
+<div id="wrapper">
+  <flotsam-page-reader target="#article"></flotsam-page-reader>
+
+  <article id="article">
+    <h2>The Curb Cut Effect</h2>
+    <p>In the 1970s, disability rights activists in Berkeley, California fought for a simple change: small ramps cut into sidewalk curbs. The modification was intended to help wheelchair users navigate city streets independently.</p>
+    <p>What happened next was unexpected. Parents with strollers started using the ramps. Delivery workers with hand trucks found them indispensable. Travelers rolling luggage, joggers, and cyclists all gravitated toward the cuts. A feature designed for a narrow group of people turned out to benefit nearly everyone.</p>
+    <h3>A Pattern That Repeats</h3>
+    <p>This is the curb cut effect: when inclusive design for people with disabilities leads to innovation that benefits the broader population. It appears everywhere once you start looking.</p>
+    <p>Closed captions were developed for deaf and hard-of-hearing viewers. Today they are used in noisy airports, quiet bedrooms, language learning, and anywhere people watch video on mute. The typewriter was originally conceived as a writing aid for the blind. Voice control started as an assistive technology and became the interface for billions of smart speakers.</p>
+    <h3>Why It Matters for the Web</h3>
+    <p>The same dynamic plays out in web development. Building accessible interfaces — semantic HTML, keyboard navigation, screen reader support — produces markup that is also better for search engines, easier to test, and more resilient across devices.</p>
+    <p>Designing for constraint doesn't limit a product. It reveals assumptions baked into the original design and replaces them with something more universal.</p>
+  </article>
+</div>
+
+<style>
+  #wrapper {
+    max-inline-size: 640px;
+    margin: 0 auto;
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+  }
+
+  flotsam-page-reader {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+    margin-block-end: 16px;
+  }
+
+  #article {
+    padding: 0 8px;
+  }
+
+  h2 { margin-block-end: 8px; font-size: 1.4rem; }
+  h3 { margin-block-start: 24px; font-size: 1.1rem; }
+  p { margin-block: 12px; }
+</style>
+
+<script type="module">
+  import '@flotsam/elements/flotsam-page-reader/flotsam-page-reader.js';
+</script>
