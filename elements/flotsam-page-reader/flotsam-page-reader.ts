@@ -60,6 +60,7 @@ export class FlotsamPageReader extends LitElement {
 
   #segments: Segment[] = [];
   #supported = true;
+  #prefersReducedMotion = false;
 
   get #progress(): number {
     if (this._totalSegments === 0 || this._currentIndex < 0) return 0;
@@ -70,6 +71,7 @@ export class FlotsamPageReader extends LitElement {
     super.connectedCallback();
     if (!isServer) {
       this.#supported = 'speechSynthesis' in window;
+      this.#prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!this.hasAttribute('role')) {
         this.setAttribute('role', 'toolbar');
       }
@@ -228,7 +230,10 @@ export class FlotsamPageReader extends LitElement {
     seg.element.classList.add('flotsam-page-reader-active');
     seg.element.setAttribute('aria-current', 'true');
     if (this._autoScroll) {
-      seg.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      seg.element.scrollIntoView({
+        behavior: this.#prefersReducedMotion ? 'instant' : 'smooth',
+        block: 'center',
+      });
     }
   }
 
@@ -268,8 +273,9 @@ export class FlotsamPageReader extends LitElement {
         role="progressbar"
         aria-valuenow=${current}
         aria-valuemin=${0}
-        aria-valuemax=${total}
+        aria-valuemax=${total || 100}
         aria-label="Reading progress"
+        aria-hidden=${total === 0 ? 'true' : 'false'}
       >
         <div id="track">
           <div id="fill" style=${styleMap({

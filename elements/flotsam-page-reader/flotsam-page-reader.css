@@ -124,6 +124,18 @@ button svg {
   block-size: 1px;
   inline-size: 1px;
   overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
   clip-path: inset(50%);
   white-space: nowrap;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+}
+
+/* --- Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  #fill {
+    transition: none;
+  }
 }
