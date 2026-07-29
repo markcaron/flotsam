@@ -2,6 +2,7 @@
 description: "Page reader that reads an article aloud with paragraph highlighting and auto-scroll."
 ---
 <link rel="stylesheet" href="/styles/flotsam.css">
+<link rel="stylesheet" href="/elements/flotsam-page-reader/flotsam-page-reader-lightdom.css">
 
 <div id="wrapper">
   <flotsam-page-reader target="#article"></flotsam-page-reader>
@@ -31,10 +32,6 @@ description: "Page reader that reads an article aloud with paragraph highlightin
     position: sticky;
     inset-block-start: 0;
     z-index: 1;
-    background: light-dark(#f8f8f8, #1a1a1a);
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: 1px solid light-dark(#ddd, #333);
     margin-block-end: 16px;
   }
 
@@ -45,20 +42,6 @@ description: "Page reader that reads an article aloud with paragraph highlightin
   h2 { margin-block-end: 8px; font-size: 1.4rem; }
   h3 { margin-block-start: 24px; font-size: 1.1rem; }
   p { margin-block: 12px; }
-
-  .flotsam-page-reader-active {
-    background: light-dark(
-      rgba(0, 120, 215, 0.08),
-      rgba(100, 180, 255, 0.12)
-    );
-    border-radius: 4px;
-    outline: 2px solid light-dark(
-      rgba(0, 120, 215, 0.25),
-      rgba(100, 180, 255, 0.3)
-    );
-    outline-offset: 4px;
-    transition: background 200ms ease, outline-color 200ms ease;
-  }
 </style>
 
 <script type="module">

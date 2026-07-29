@@ -7,6 +7,8 @@ import { styleMap } from 'lit/directives/style-map.js';
 
 import styles from './flotsam-page-reader.css' with { type: 'css' };
 
+const HIGHLIGHT_NAME = 'flotsam-page-reader';
+
 interface Segment {
   text: string;
   element: Element;
@@ -16,11 +18,16 @@ interface Segment {
  * A page reader that reads content aloud using the Web Speech Synthesis
  * API. Point it at a content container via the `target` attribute and it
  * extracts readable text elements, synthesizes speech one paragraph at a
- * time, highlights the active element, and optionally auto-scrolls to
- * keep it in view.
+ * time, highlights the active element via the CSS Custom Highlight API,
+ * and optionally auto-scrolls to keep it in view.
  *
- * Consumers should provide a `.flotsam-page-reader-active` style rule in
- * their light-DOM stylesheet to visually indicate the active paragraph.
+ * Include the shipped light-DOM stylesheet for default highlight styles:
+ * ```html
+ * <link rel="stylesheet" href="flotsam-page-reader-lightdom.css">
+ * ```
+ *
+ * Override the highlight color by redefining `::highlight(flotsam-page-reader)`
+ * in your own stylesheet.
  *
  * @summary Read-aloud page reader using Web Speech Synthesis.
  *
@@ -61,6 +68,7 @@ export class FlotsamPageReader extends LitElement {
   #segments: Segment[] = [];
   #supported = true;
   #prefersReducedMotion = false;
+  #highlight: Highlight | null = null;
 
   get #progress(): number {
     if (this._totalSegments === 0 || this._currentIndex < 0) return 0;
@@ -76,6 +84,10 @@ export class FlotsamPageReader extends LitElement {
         this.setAttribute('role', 'toolbar');
       }
       this.setAttribute('aria-label', this.label);
+      if ('highlights' in CSS) {
+        this.#highlight = new Highlight();
+        CSS.highlights.set(HIGHLIGHT_NAME, this.#highlight);
+      }
     }
   }
 
@@ -89,6 +101,10 @@ export class FlotsamPageReader extends LitElement {
     super.disconnectedCallback();
     if (!isServer && this.#supported) {
       this.#stop();
+    }
+    if (this.#highlight) {
+      CSS.highlights.delete(HIGHLIGHT_NAME);
+      this.#highlight = null;
     }
   }
 
@@ -227,8 +243,11 @@ export class FlotsamPageReader extends LitElement {
     this.#clearHighlight();
     const seg = this.#segments[this._currentIndex];
     if (!seg) return;
-    seg.element.classList.add('flotsam-page-reader-active');
-    seg.element.setAttribute('aria-current', 'true');
+    if (this.#highlight) {
+      const range = new Range();
+      range.selectNodeContents(seg.element);
+      this.#highlight.add(range);
+    }
     if (this._autoScroll) {
       seg.element.scrollIntoView({
         behavior: this.#prefersReducedMotion ? 'instant' : 'smooth',
@@ -238,10 +257,7 @@ export class FlotsamPageReader extends LitElement {
   }
 
   #clearHighlight(): void {
-    for (const seg of this.#segments) {
-      seg.element.classList.remove('flotsam-page-reader-active');
-      seg.element.removeAttribute('aria-current');
-    }
+    this.#highlight?.clear();
   }
 
   override render() {
