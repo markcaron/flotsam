@@ -116,3 +116,14 @@ button svg {
   border-color: var(--flotsam-color-interactive-default, light-dark(#0066cc, #92c5f9));
   color: var(--flotsam-color-interactive-text, light-dark(#ffffff, #000000));
 }
+
+/* --- Visually hidden live region --- */
+
+#announce {
+  position: absolute;
+  block-size: 1px;
+  inline-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

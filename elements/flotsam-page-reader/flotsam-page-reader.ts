@@ -1,6 +1,7 @@
 import { LitElement, html, isServer, nothing } from 'lit';
 import { customElement } from 'lit/decorators/custom-element.js';
 import { property } from 'lit/decorators/property.js';
+import { query } from 'lit/decorators/query.js';
 import { state } from 'lit/decorators/state.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
@@ -18,7 +19,7 @@ interface Segment {
  * time, highlights the active element, and optionally auto-scrolls to
  * keep it in view.
  *
- * Consumers should provide a `.flotsam-speech-active` style rule in
+ * Consumers should provide a `.flotsam-page-reader-active` style rule in
  * their light-DOM stylesheet to visually indicate the active paragraph.
  *
  * @summary Read-aloud page reader using Web Speech Synthesis.
@@ -53,6 +54,10 @@ export class FlotsamPageReader extends LitElement {
   @state() _currentIndex = -1;
   @state() _totalSegments = 0;
 
+  @state() _announcement = '';
+
+  @query('#play') private _playButton!: HTMLButtonElement;
+
   #segments: Segment[] = [];
   #supported = true;
 
@@ -65,6 +70,16 @@ export class FlotsamPageReader extends LitElement {
     super.connectedCallback();
     if (!isServer) {
       this.#supported = 'speechSynthesis' in window;
+      if (!this.hasAttribute('role')) {
+        this.setAttribute('role', 'toolbar');
+      }
+      this.setAttribute('aria-label', this.label);
+    }
+  }
+
+  protected override updated(changed: Map<PropertyKey, unknown>): void {
+    if (changed.has('label')) {
+      this.setAttribute('aria-label', this.label);
     }
   }
 
@@ -182,25 +197,35 @@ export class FlotsamPageReader extends LitElement {
     }
   };
 
-  #handleStop = (): void => {
+  #handleStop = async (): Promise<void> => {
     this.#stop();
+    await this.updateComplete;
+    this._playButton?.focus();
   };
 
   #cycleRate = (): void => {
     const rates = [0.75, 1, 1.25, 1.5, 2];
     const idx = rates.indexOf(this._rate);
     this._rate = rates[(idx + 1) % rates.length];
+    this.#announce(`Speed: ${this._rate}x`);
   };
 
   #toggleAutoScroll = (): void => {
     this._autoScroll = !this._autoScroll;
   };
 
+  #announce(message: string): void {
+    this._announcement = '';
+    requestAnimationFrame(() => {
+      this._announcement = message;
+    });
+  }
+
   #highlightCurrent(): void {
     this.#clearHighlight();
     const seg = this.#segments[this._currentIndex];
     if (!seg) return;
-    seg.element.classList.add('flotsam-speech-active');
+    seg.element.classList.add('flotsam-page-reader-active');
     seg.element.setAttribute('aria-current', 'true');
     if (this._autoScroll) {
       seg.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -209,7 +234,7 @@ export class FlotsamPageReader extends LitElement {
 
   #clearHighlight(): void {
     for (const seg of this.#segments) {
-      seg.element.classList.remove('flotsam-speech-active');
+      seg.element.classList.remove('flotsam-page-reader-active');
       seg.element.removeAttribute('aria-current');
     }
   }
@@ -239,16 +264,20 @@ export class FlotsamPageReader extends LitElement {
           aria-label="Stop"
         ><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1"/></svg></button>
       ` : nothing}
-      <div id="progress">
+      <div id="progress"
+        role="progressbar"
+        aria-valuenow=${current}
+        aria-valuemin=${0}
+        aria-valuemax=${total}
+        aria-label="Reading progress"
+      >
         <div id="track">
           <div id="fill" style=${styleMap({
             'inline-size': `${this.#progress * 100}%`,
           })}></div>
         </div>
       </div>
-      ${total > 0 ? html`
-        <span id="status">${current} of ${total}</span>
-      ` : nothing}
+      <span id="status" aria-live="polite">${total > 0 ? `${current} of ${total}` : ''}</span>
       <button
         id="speed"
         @click=${this.#cycleRate}
@@ -258,9 +287,9 @@ export class FlotsamPageReader extends LitElement {
         id="scroll"
         @click=${this.#toggleAutoScroll}
         aria-pressed=${autoScroll ? 'true' : 'false'}
-        aria-label="Auto-scroll"
-        title="Auto-scroll to current paragraph"
+        aria-label="Auto-scroll to current paragraph"
       >Scroll</button>
+      <span id="announce" role="status" aria-live="polite">${this._announcement}</span>
     `;
   }
 }
