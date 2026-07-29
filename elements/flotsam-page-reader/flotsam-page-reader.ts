@@ -256,6 +256,7 @@ export class FlotsamPageReader extends LitElement {
       : html`<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="6,4 20,12 6,20"/></svg>`;
 
     return html`
+      <div id="container">
       <span id="label">${this.label}</span>
       <button
         id="play"
@@ -296,6 +297,7 @@ export class FlotsamPageReader extends LitElement {
         aria-label="Auto-scroll to current paragraph"
       >Scroll</button>
       <span id="announce" role="status" aria-live="polite">${this._announcement}</span>
+      </div>
     `;
   }
 }

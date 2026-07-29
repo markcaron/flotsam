@@ -207,6 +207,19 @@ Slot descriptions should tell users what to put there, not describe the slot abs
 
 ### Shadow DOM & Templates
 
+#### Use a `#container` element instead of styling `:host`
+Avoid putting layout, position, or visual styles on the `:host` element. Instead, use a `#container` div (or semantic equivalent) as the first child of the shadow root and apply styles there. This prevents "sprouting" inline styles on the host, keeps the host's attribute list clean for consumers, and avoids specificity conflicts between author styles set on the tag and internal shadow styles on `:host`. Dynamic CSS custom properties (e.g., `--_progress`) should also be set on `#container` rather than `this.style`.
+
+```html
+<!-- Prefer -->
+<div id="container">…</div>
+
+<!-- Avoid -->
+:host { position: relative; display: grid; … }
+```
+
+`:host` should be limited to `display` (block/flex/contents) and passthrough layout concerns that genuinely belong on the outer element.
+
 #### Minimize wrapper/container elements
 If a class or attribute can be applied directly to a semantic element (like ` `), don't add an extra ` ` wrapper. Fewer DOM nodes mean better performance and simpler CSS.
 

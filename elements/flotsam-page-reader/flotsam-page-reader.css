@@ -5,9 +5,14 @@
 }
 
 :host {
+  display: block;
+}
+
+#container {
   display: flex;
   align-items: center;
   gap: 8px;
+  position: relative;
   font-family: system-ui, sans-serif;
 }
 
