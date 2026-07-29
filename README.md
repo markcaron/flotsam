@@ -15,5 +15,5 @@ The dev server is provided by [`@pwrs/cem`](https://github.com/bennypowers/cem),
 ```
 elements/                          # Web components
   flotsam-scroll-progress/         # Scroll-aware reading progress gauge
-  flotsam-speech-player/           # Text-to-speech reader using SpeechSynthesis
+  flotsam-page-reader/             # Read-aloud page reader using SpeechSynthesis
 ```

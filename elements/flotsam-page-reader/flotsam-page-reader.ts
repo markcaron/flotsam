@@ -4,7 +4,7 @@ import { property } from 'lit/decorators/property.js';
 import { state } from 'lit/decorators/state.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-import styles from './flotsam-speech-player.css' with { type: 'css' };
+import styles from './flotsam-page-reader.css' with { type: 'css' };
 
 interface Segment {
   text: string;
@@ -12,16 +12,16 @@ interface Segment {
 }
 
 /**
- * A text-to-speech player that reads page content aloud using the
- * Web Speech Synthesis API. Point it at a content container via the
- * `target` attribute and it extracts readable text elements, synthesizes
- * speech one paragraph at a time, highlights the active element, and
- * optionally auto-scrolls to keep it in view.
+ * A page reader that reads content aloud using the Web Speech Synthesis
+ * API. Point it at a content container via the `target` attribute and it
+ * extracts readable text elements, synthesizes speech one paragraph at a
+ * time, highlights the active element, and optionally auto-scrolls to
+ * keep it in view.
  *
  * Consumers should provide a `.flotsam-speech-active` style rule in
  * their light-DOM stylesheet to visually indicate the active paragraph.
  *
- * @summary Text-to-speech reader for page content.
+ * @summary Read-aloud page reader using Web Speech Synthesis.
  *
  * @cssprop {<color>} --flotsam-color-interactive-default - Primary interactive
  *   color used for hover/pressed backgrounds and the progress fill.
@@ -30,15 +30,18 @@ interface Segment {
  * @cssprop {<color>} --flotsam-color-surface-subtle - Track background color.
  * @cssprop {<color>} --flotsam-color-focus - Focus ring color.
  *
- * @fires {Event} flotsam-speech-player-end - Fires when speech playback
+ * @fires {Event} flotsam-page-reader-end - Fires when speech playback
  *   completes naturally (not on stop).
  */
-@customElement('flotsam-speech-player')
-export class FlotsamSpeechPlayer extends LitElement {
+@customElement('flotsam-page-reader')
+export class FlotsamPageReader extends LitElement {
   static readonly styles = [styles];
 
   /** CSS selector for the content element whose text will be read aloud. */
   @property() target?: string;
+
+  /** Visible label displayed before the transport controls. */
+  @property() label = 'Read aloud';
 
   /** Preferred voice name. Falls back to the default voice for the page language. */
   @property() voice?: string;
@@ -167,7 +170,7 @@ export class FlotsamSpeechPlayer extends LitElement {
     this._totalSegments = 0;
     this.#clearHighlight();
     this.dispatchEvent(
-      new Event('flotsam-speech-player-end', { bubbles: true, composed: true }),
+      new Event('flotsam-page-reader-end', { bubbles: true, composed: true }),
     );
   }
 
@@ -223,10 +226,11 @@ export class FlotsamSpeechPlayer extends LitElement {
       : html`<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="6,4 20,12 6,20"/></svg>`;
 
     return html`
+      <span id="label">${this.label}</span>
       <button
         id="play"
         @click=${this.#toggle}
-        aria-label=${playing ? 'Pause' : paused ? 'Resume' : 'Play'}
+        aria-label=${playing ? 'Pause' : paused ? 'Resume' : this.label}
       >${playIcon}</button>
       ${playing || paused ? html`
         <button
@@ -263,6 +267,6 @@ export class FlotsamSpeechPlayer extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'flotsam-speech-player': FlotsamSpeechPlayer;
+    'flotsam-page-reader': FlotsamPageReader;
   }
 }

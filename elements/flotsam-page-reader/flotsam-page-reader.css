@@ -11,6 +11,14 @@
   font-family: system-ui, sans-serif;
 }
 
+/* --- Label --- */
+
+#label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 /* --- Buttons (shared) --- */
 
 button {

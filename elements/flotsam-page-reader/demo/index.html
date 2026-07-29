@@ -1,10 +1,10 @@
 ---
-description: "Text-to-speech player reading an article with sentence highlighting and auto-scroll."
+description: "Page reader that reads an article aloud with paragraph highlighting and auto-scroll."
 ---
 <link rel="stylesheet" href="/styles/flotsam.css">
 
 <div id="wrapper">
-  <flotsam-speech-player target="#article"></flotsam-speech-player>
+  <flotsam-page-reader target="#article"></flotsam-page-reader>
 
   <article id="article">
     <h2>The Curb Cut Effect</h2>
@@ -27,7 +27,7 @@ description: "Text-to-speech player reading an article with sentence highlightin
     line-height: 1.6;
   }
 
-  flotsam-speech-player {
+  flotsam-page-reader {
     position: sticky;
     inset-block-start: 0;
     z-index: 1;
@@ -62,5 +62,5 @@ description: "Text-to-speech player reading an article with sentence highlightin
 </style>
 
 <script type="module">
-  import '@flotsam/elements/flotsam-speech-player/flotsam-speech-player.js';
+  import '@flotsam/elements/flotsam-page-reader/flotsam-page-reader.js';
 </script>
