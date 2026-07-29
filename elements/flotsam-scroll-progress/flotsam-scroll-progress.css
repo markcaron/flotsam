@@ -71,10 +71,7 @@
       --flotsam-scroll-progress-background,
       var(
         --flotsam-scroll-progress-color,
-        light-dark(
-          var(--flotsam-color-accent-brand, #ee0000),
-          var(--flotsam-color-accent-brand, #ee0000)
-        )
+        var(--flotsam-color-accent-brand, #ee0000)
       )
     );
   will-change: clip-path;

@@ -1,0 +1,110 @@
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+:host {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: system-ui, sans-serif;
+}
+
+/* --- Buttons (shared) --- */
+
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+  font: inherit;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--flotsam-color-focus, light-dark(#0066cc, #92c5f9));
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+button svg {
+  inline-size: 14px;
+  block-size: 14px;
+  fill: currentColor;
+}
+
+/* --- Play / Stop --- */
+
+#play,
+#stop {
+  inline-size: 32px;
+  block-size: 32px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+#play:hover,
+#stop:hover {
+  background: var(--flotsam-color-interactive-default, light-dark(#0066cc, #92c5f9));
+  border-color: var(--flotsam-color-interactive-default, light-dark(#0066cc, #92c5f9));
+  color: var(--flotsam-color-interactive-text, light-dark(#ffffff, #000000));
+}
+
+/* --- Progress --- */
+
+#progress {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+#track {
+  block-size: 4px;
+  border-radius: 2px;
+  background: var(--flotsam-color-surface-subtle, light-dark(#e0e0e0, #4d4d4d));
+  overflow: hidden;
+}
+
+#fill {
+  block-size: 100%;
+  border-radius: 2px;
+  background: var(--flotsam-color-interactive-default, light-dark(#0066cc, #92c5f9));
+  transition: inline-size 200ms ease-out;
+}
+
+/* --- Status --- */
+
+#status {
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* --- Speed / Scroll toggles --- */
+
+#speed,
+#scroll {
+  padding: 2px 6px;
+  min-block-size: 24px;
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+#speed:hover,
+#scroll:hover {
+  background: var(--flotsam-color-interactive-default, light-dark(#0066cc, #92c5f9));
+  border-color: var(--flotsam-color-interactive-default, light-dark(#0066cc, #92c5f9));
+  color: var(--flotsam-color-interactive-text, light-dark(#ffffff, #000000));
+}
+
+#scroll[aria-pressed="true"] {
+  background: var(--flotsam-color-interactive-default, light-dark(#0066cc, #92c5f9));
+  border-color: var(--flotsam-color-interactive-default, light-dark(#0066cc, #92c5f9));
+  color: var(--flotsam-color-interactive-text, light-dark(#ffffff, #000000));
+}
